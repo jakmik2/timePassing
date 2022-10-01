@@ -9,11 +9,13 @@ public class PlayerController : MonoBehaviour
     Transform transform;
     Animator animator;
     [SerializeField] float jumpVelocity;
+
     // Start is called before the first frame update
     void Start()
     {
         Physics2D.queriesStartInColliders = false;
         rigidbody2D = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         transform = GetComponent<Transform>();
         sprite = GetComponent<SpriteRenderer>();
     }
@@ -21,29 +23,37 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!notFalling() && rigidbody2D.velocity.y < 0)
-        {
-            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, rigidbody2D.velocity.y * 1.005f);
-        }
-
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
             Move();
         if (Input.GetKey(KeyCode.W))
-        {
-            // animator.SetBool("Jumping", true);
             Jump();
-        }
+        UpdateAnimation();
     }
 
     private void Move()
     {
         float dirX = Input.GetAxis("Horizontal");
         rigidbody2D.velocity = new Vector2(dirX * 7.0f, rigidbody2D.velocity.y);
-    
-        if (rigidbody2D.velocity.x < -.1f)
-            sprite.flipX = true;
+    }
+
+    private void UpdateAnimation()
+    {
+        if (rigidbody2D.velocity.y > 0)
+        {
+            animator.SetBool("Jumping", true);
+        }
+        else if (rigidbody2D.velocity.y < 0)
+        {
+            animator.SetBool("Jumping", false);
+            animator.SetBool("Falling", true);
+            // For Accelerated-Snappy Fall
+            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, rigidbody2D.velocity.y * 1.005f);
+        }
         else
-            sprite.flipX = false;
+        {
+            animator.SetBool("Falling", false);
+        }
+        animator.SetFloat("posX", rigidbody2D.velocity.x);
     }
 
     private void Jump()
