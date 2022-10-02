@@ -8,7 +8,12 @@ public class PlayerController : MonoBehaviour
     SpriteRenderer sprite;
     Transform transform;
     Animator animator;
+    AgeBehavior ageBehavior;
     [SerializeField] float jumpVelocity;
+    public float speed;
+    public bool playerFacingRight;
+    AgeStats currentAge;
+    Vector2 startPos;
 
     // Start is called before the first frame update
     void Start()
@@ -18,40 +23,49 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         transform = GetComponent<Transform>();
         sprite = GetComponent<SpriteRenderer>();
+        speed = GetComponent<AgeStats>().speed;
+        ageBehavior = GetComponent<AgeBehavior>();
+        startPos = transform.position;
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        speed = ageBehavior.speed;
+        if (rigidbody2D.velocity.x > 0 )
+            animator.SetFloat("lastDirection", 1);
+        if (rigidbody2D.velocity.x < 0)
+            animator.SetFloat("lastDirection", 0);
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
             Move();
         if (Input.GetKey(KeyCode.W))
             Jump();
+        if (Input.GetMouseButtonDown(0))
+            Attack();
         UpdateAnimation();
     }
 
     private void Move()
     {
         float dirX = Input.GetAxis("Horizontal");
-        rigidbody2D.velocity = new Vector2(dirX * 7.0f, rigidbody2D.velocity.y);
+        if (dirX >= 0)
+            playerFacingRight = true;
+        else
+            playerFacingRight = false;
+        rigidbody2D.velocity = new Vector2(dirX * speed, rigidbody2D.velocity.y);
     }
 
     private void UpdateAnimation()
     {
-        if (rigidbody2D.velocity.y > 0)
+        if (rigidbody2D.velocity.y < 0)
         {
-            animator.SetBool("Jumping", true);
-        }
-        else if (rigidbody2D.velocity.y < 0)
-        {
-            animator.SetBool("Jumping", false);
-            animator.SetBool("Falling", true);
-            // For Accelerated-Snappy Fall
+            animator.SetTrigger("Falling");
             rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, rigidbody2D.velocity.y * 1.005f);
         }
         else
         {
-            animator.SetBool("Falling", false);
+            animator.SetBool("OnGround", true);
         }
         animator.SetFloat("posX", rigidbody2D.velocity.x);
     }
@@ -62,6 +76,9 @@ public class PlayerController : MonoBehaviour
 
         if (notFalling())
         {
+            animator.SetBool("OnGround", false);
+            animator.SetTrigger("Jumping");
+
             rigidbody2D.velocity = new Vector2(0, Mathf.Min((jumpVelocity * dirY) + 2f, 10f)); // Short hop and tall hop
         }
     }
@@ -78,5 +95,18 @@ public class PlayerController : MonoBehaviour
         }
         else
             return false;
+    }
+
+    public void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.gameObject.name == "Death")
+        {
+            transform.position = startPos;
+        }
+    }
+
+    private void Attack()
+    {
+        ageBehavior.Attack();
     }
 }
