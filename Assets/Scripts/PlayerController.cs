@@ -26,17 +26,12 @@ public class PlayerController : MonoBehaviour
         speed = GetComponent<AgeStats>().speed;
         ageBehavior = GetComponent<AgeBehavior>();
         startPos = transform.position;
-
     }
 
     // Update is called once per frame
     void Update()
     {
         speed = ageBehavior.speed;
-        if (rigidbody2D.velocity.x > 0 )
-            animator.SetFloat("lastDirection", 1);
-        if (rigidbody2D.velocity.x < 0)
-            animator.SetFloat("lastDirection", 0);
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
             Move();
         if (Input.GetKey(KeyCode.W))
@@ -49,25 +44,25 @@ public class PlayerController : MonoBehaviour
     private void Move()
     {
         float dirX = Input.GetAxis("Horizontal");
-        if (dirX >= 0)
+        if (dirX > 0)
             playerFacingRight = true;
-        else
+        else if (dirX < 0)
             playerFacingRight = false;
+        
         rigidbody2D.velocity = new Vector2(dirX * speed, rigidbody2D.velocity.y);
     }
 
     private void UpdateAnimation()
     {
-        if (rigidbody2D.velocity.y < 0)
-        {
-            animator.SetTrigger("Falling");
-            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, rigidbody2D.velocity.y * 1.005f);
-        }
-        else
-        {
-            animator.SetBool("OnGround", true);
-        }
+        // TODO: Known bug, when idling right, it quickly idles left first
         animator.SetFloat("posX", rigidbody2D.velocity.x);
+        animator.SetFloat("posY", rigidbody2D.velocity.y);
+
+        if (Input.GetAxisRaw("Horizontal") == 1 || Input.GetAxisRaw("Horizontal") == -1)
+        {
+            animator.SetFloat("lastDirection", Input.GetAxisRaw("Horizontal"));
+            // Debug.Log(Input.GetAxisRaw("Horizontal"));
+        }
     }
 
     private void Jump()
@@ -76,10 +71,7 @@ public class PlayerController : MonoBehaviour
 
         if (notFalling())
         {
-            animator.SetBool("OnGround", false);
-            animator.SetTrigger("Jumping");
-
-            rigidbody2D.velocity = new Vector2(0, Mathf.Min((jumpVelocity * dirY) + 2f, 10f)); // Short hop and tall hop
+            rigidbody2D.velocity = new Vector2(0, Mathf.Min((jumpVelocity * dirY) + 2f, 10f));
         }
     }
 
@@ -102,6 +94,14 @@ public class PlayerController : MonoBehaviour
         if (col.gameObject.name == "Death")
         {
             transform.position = startPos;
+        }
+        else if (col.gameObject.GetComponent<Damage>() != null)
+        {
+            Damage damage = col.gameObject.GetComponent<Damage>();
+            ageBehavior.currentHealth -= damage.points;
+            rigidbody2D.velocity = new Vector2(-1f * Mathf.Sign(rigidbody2D.velocity.x) + 2f, 4f);
+            // Debug.Log(rigidbody2D.velocity);
+            GetComponent<Animator>().SetTrigger("Damage");
         }
     }
 

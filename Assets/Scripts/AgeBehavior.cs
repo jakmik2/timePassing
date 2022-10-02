@@ -33,6 +33,7 @@ public class AgeBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Debug.Log(currentHealth);
         ChangeState();
     }
 
