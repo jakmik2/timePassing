@@ -337,7 +337,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d14e35604b343444ae033e7ec64aa11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
+  speed: 4
 --- !u!114 &3682315310964514049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -350,7 +350,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4ad7e30b2500145a06719fc06830b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  points: 1
+  points: 5
+  playerAttack: 0
 --- !u!70 &3682315310964514054
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -379,4 +380,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72e2cbd740d0f074195c444100a12ed8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 3
+  maxHealth: 10
+  points: 500
