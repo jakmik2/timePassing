@@ -38,8 +38,10 @@ public class AgeBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (age.state == AgeEnum.Adult)
-            Debug.Log(weapon.GetComponent<BoxCollider2D>().enabled);
+        // I don't like this and I'm sure you don't either, we'll both survive
+        // if (age.state == AgeEnum.Adult)
+        //     if (timeSinceLastAttack < 0.2)
+        //         weapon.GetComponent<BoxCollider2D>().enabled = false;
         timeSinceLastAttack += Time.deltaTime;
         ChangeState();
     }
@@ -187,6 +189,7 @@ public class AgeBehavior : MonoBehaviour
 
     private void AdultAttack() 
     {
+        
         if (timeSinceLastAttack < 0.5)
             return;
         else
@@ -203,6 +206,7 @@ public class AgeBehavior : MonoBehaviour
 
     public void FinishAdultAttack()
     {
+        Debug.Log(playerController);
         weapon.GetComponent<BoxCollider2D>().enabled = false;
         playerController.invincible = false;
     }

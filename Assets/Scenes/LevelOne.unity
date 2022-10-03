@@ -401,6 +401,10 @@ PrefabInstance:
       propertyPath: healthBar
       value: 
       objectReference: {fileID: 482389253}
+    - target: {fileID: 3866173741154504323, guid: cddf31c04b7fcd04d8fe46b7b170bb64, type: 3}
+      propertyPath: velocityAugment
+      value: 1.005
+      objectReference: {fileID: 0}
     - target: {fileID: 3866173741154504329, guid: cddf31c04b7fcd04d8fe46b7b170bb64, type: 3}
       propertyPath: m_Name
       value: Player
