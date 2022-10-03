@@ -7,6 +7,7 @@ using TMPro;
 public class DialogueController : MonoBehaviour
 {
     public TextMeshProUGUI dialogueText;
+    [SerializeField] GameObject dialogueObject;
 
     public Animator animator;
 
@@ -46,5 +47,6 @@ public class DialogueController : MonoBehaviour
     void EndDialogue()
     {
         animator.SetBool("isOpen", false);
+        dialogueObject.SetActive(false);
     }
 }
