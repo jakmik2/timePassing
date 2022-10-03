@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 2645201214926485625}
   - component: {fileID: 2645201214926485624}
   - component: {fileID: 2645201214926485631}
-  - component: {fileID: 2645201214926485630}
   - component: {fileID: 2645201214926485629}
+  - component: {fileID: 9188568288208046454}
   m_Layer: 0
   m_Name: Young
   m_TagString: Untagged
@@ -129,32 +129,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!61 &2645201214926485630
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2645201214926485628}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.0033870637}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.32, y: 0.32}
-    newSize: {x: 0.32, y: 0.32}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.22, y: 0.31425822}
-  m_EdgeRadius: 0
 --- !u!114 &2645201214926485629
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,3 +144,19 @@ MonoBehaviour:
   maxHealth: 20
   speed: 7
   defense: 10
+--- !u!70 &9188568288208046454
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2645201214926485628}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.17, y: 0.3}
+  m_Direction: 0
