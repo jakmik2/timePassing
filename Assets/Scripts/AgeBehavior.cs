@@ -10,6 +10,7 @@ public class AgeBehavior : MonoBehaviour
     public float speed;
     public Age age;
     GameObject prefab;
+    [SerializeField] HealthBar healthBar;
     [SerializeField] GameObject babyPrefab;
     [SerializeField] GameObject youngPrefab;
     [SerializeField] GameObject adultPrefab;
@@ -19,21 +20,27 @@ public class AgeBehavior : MonoBehaviour
     PlayerController playerController;
     GameObject weapon;
     float timer = 0.0f;
+    float timeSinceLastAttack = 0.0f;
     
-
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         age = new Age();
         prefab = GetCurrentPrefab();
-        UpdatePlayerStatistics();
         playerController = FindObjectOfType(typeof(PlayerController)) as PlayerController;
+    }
+
+    void Start()
+    {
+        healthBar.SetMaxHealth(maxHealth, true);
+        UpdatePlayerStatistics();
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Debug.Log(currentHealth);
+        if (age.state == AgeEnum.Adult)
+            Debug.Log(weapon.GetComponent<BoxCollider2D>().enabled);
+        timeSinceLastAttack += Time.deltaTime;
         ChangeState();
     }
 
@@ -68,8 +75,25 @@ public class AgeBehavior : MonoBehaviour
         }
     }
 
+    public void TakeDamage(float amt)
+    {
+        currentHealth -= amt;
+        healthBar.SetHealth(currentHealth);
+    }
+
     private void UpdatePlayerStatistics()
     {
+        // Make sure transform is correct size
+        playerController.gameObject.transform.localScale = prefab.gameObject.transform.localScale;
+
+        // Make sure collider is correct size
+        playerController.GetComponent<CapsuleCollider2D>().size = prefab.gameObject.GetComponent<CapsuleCollider2D>().size;
+
+        // Clean up previous attacks
+        // FinishMapping();
+        playerController.invincible = true;
+        attacking = false;
+
         if (weapon != null)
             weapon.SetActive(false);
 
@@ -78,6 +102,8 @@ public class AgeBehavior : MonoBehaviour
         
         this.maxHealth = prefab.GetComponent<AgeStats>().maxHealth;
         this.currentHealth = maxHealth * ratio;
+        healthBar.SetMaxHealth(this.maxHealth);
+        healthBar.SetHealth(this.currentHealth);
         
         // Update defense
         this.defense = prefab.GetComponent<AgeStats>().defense;
@@ -94,8 +120,9 @@ public class AgeBehavior : MonoBehaviour
         // Add Weapon if they have one
         if (age.state == AgeEnum.Adult)
         {
-            weapon = transform.GetChild(0).GetChild(0).gameObject;
+            weapon = transform.GetChild(0).gameObject;
             weapon.SetActive(true);
+            weapon.GetComponent<BoxCollider2D>().enabled = false;
         }
     }
 
@@ -127,25 +154,75 @@ public class AgeBehavior : MonoBehaviour
         this.defense = storeDefense;
     }
 
+    bool attacking;
+
     private void YoungAttack() {
+        if (timeSinceLastAttack < 0.2)
+            return;
+        else
+            timeSinceLastAttack = 0.0f;
+
         // Shoot Bow
-        GameObject arrow = Instantiate(this.arrow);
+        Vector2 shotVelocity = new Vector2(20, 0);
+        bool flip = false;
+        
+        if (!playerController.playerFacingRight)
+        {
+            shotVelocity *= -1f;
+            flip = true;
+        }
+
+        GameObject arrow = Instantiate(this.arrow, new Vector2(transform.position.x + shotVelocity.x / 40f, transform.position.y), prefab.transform.rotation);
         arrow.transform.position = transform.position;
         playerController.GetComponent<Animator>().SetTrigger("Attack");
-        if (playerController.playerFacingRight)
-            arrow.GetComponent<Rigidbody2D>().velocity = new Vector2(20, 0);
-        else
-        {
-            arrow.GetComponent<SpriteRenderer>().flipX = true;
-            arrow.GetComponent<Rigidbody2D>().velocity = new Vector2(-20, 0);
-        }
+
+        arrow.GetComponent<Rigidbody2D>().velocity = shotVelocity;
+        arrow.GetComponent<SpriteRenderer>().flipX = flip;
+    }
+
+    public void FinishYoungAttack()
+    {
+        attacking = false;
     }
 
     private void AdultAttack() 
     {
-        // Play attack animation        
-        weapon.GetComponent<Animator>().SetTrigger("Attack");
+        if (timeSinceLastAttack < 0.5)
+            return;
+        else
+            timeSinceLastAttack = 0.0f;
+
+        attacking = true;
+        // iFrames during attack
+        playerController.invincible = true;
+
+        // Play attack animation
+        weapon.GetComponent<BoxCollider2D>().enabled = true;
+        playerController.GetComponent<Animator>().SetTrigger("Attack");
+    }
+
+    public void FinishAdultAttack()
+    {
+        weapon.GetComponent<BoxCollider2D>().enabled = false;
+        playerController.invincible = false;
     }
 
     private void OldAttack() {}
+
+
+    public void FinishMapping()
+    {
+        switch (age.state)
+        {
+            case AgeEnum.Baby:
+                break;
+            case AgeEnum.Young:
+                break;
+            case AgeEnum.Adult:
+                FinishAdultAttack();
+                break;
+            case AgeEnum.Old:
+                break;
+        }
+    }
 }

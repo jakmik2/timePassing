@@ -5,4 +5,5 @@ using UnityEngine;
 public class Damage : MonoBehaviour
 {
     public float points;
+    public bool playerAttack;
 }

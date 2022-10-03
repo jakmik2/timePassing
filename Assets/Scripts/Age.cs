@@ -16,7 +16,7 @@ public class Age
 
     public Age()
     {
-        state = AgeEnum.Young;
+        state = AgeEnum.Adult;
     }
 
     public void Next()
@@ -27,7 +27,7 @@ public class Age
                 state = AgeEnum.Young;
                 break;
             case AgeEnum.Young:
-                state = AgeEnum.Young;
+                state = AgeEnum.Adult;
                 break;
             case AgeEnum.Adult:
                 state = AgeEnum.Baby;

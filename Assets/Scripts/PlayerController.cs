@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
     public bool playerFacingRight;
     AgeStats currentAge;
     Vector2 startPos;
+    public bool invincible = false;
+    float timer = 0f;
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +34,9 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         speed = ageBehavior.speed;
+
+        InvincibleTimer();
+
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
             Move();
         if (Input.GetKey(KeyCode.W))
@@ -39,6 +44,18 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
             Attack();
         UpdateAnimation();
+    }
+
+    private void InvincibleTimer()
+    {
+        if (invincible)
+        {
+            timer += Time.deltaTime;
+            if (timer > 1f)
+                invincible = false;
+        }
+        else
+            timer = 0f;
     }
 
     private void Move()
@@ -95,13 +112,19 @@ public class PlayerController : MonoBehaviour
         {
             transform.position = startPos;
         }
-        else if (col.gameObject.GetComponent<Damage>() != null)
+        else if (col.gameObject.GetComponent<Damage>() != null && !invincible)
         {
+            // Handling Your own Arrow shots, this code is yikes
+            if (col.gameObject.GetComponent<Damage>().playerAttack)
+                return;
+            
+            // Otherwise inflict damage
             Damage damage = col.gameObject.GetComponent<Damage>();
-            ageBehavior.currentHealth -= damage.points;
+            ageBehavior.TakeDamage(damage.points);
             rigidbody2D.velocity = new Vector2(-1f * Mathf.Sign(rigidbody2D.velocity.x) + 2f, 4f);
-            // Debug.Log(rigidbody2D.velocity);
+            
             GetComponent<Animator>().SetTrigger("Damage");
+            invincible = true;
         }
     }
 

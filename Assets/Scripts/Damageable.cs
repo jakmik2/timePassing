@@ -4,5 +4,40 @@ using UnityEngine;
 
 public class Damageable : MonoBehaviour
 {
-    
+    [SerializeField] float maxHealth;
+    float currentHealth;
+    Animator animator;
+
+    void Start()
+    {
+        currentHealth = maxHealth;
+        animator = GetComponent<Animator>();
+    }
+
+    void Update()
+    {
+        CheckHealth();
+    }
+
+    private void CheckHealth()
+    {
+        if (currentHealth <= 0)
+        {
+            animator.SetTrigger("Dead");
+        }
+    }
+
+    public void TakeDamage(float amt)
+    {
+        animator.SetTrigger("Hit");
+        currentHealth -= amt;
+    }
+
+    public void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.GetComponent<Damage>() != null)
+        {
+            TakeDamage(col.GetComponent<Damage>().points);
+        }
+    }
 }
