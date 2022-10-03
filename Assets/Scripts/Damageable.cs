@@ -5,11 +5,15 @@ using UnityEngine;
 public class Damageable : MonoBehaviour
 {
     [SerializeField] float maxHealth;
+    [SerializeField] int points;
+    Score score;
     float currentHealth;
     Animator animator;
 
+
     void Start()
     {
+        score = FindObjectOfType(typeof(Score)) as Score;
         currentHealth = maxHealth;
         animator = GetComponent<Animator>();
     }
@@ -25,6 +29,11 @@ public class Damageable : MonoBehaviour
         {
             animator.SetTrigger("Dead");
         }
+    }
+
+    public void OnDestroy()
+    {
+        score.AddToScore(points);
     }
 
     public void TakeDamage(float amt)

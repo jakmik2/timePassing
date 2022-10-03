@@ -39,10 +39,17 @@ public class AgeBehavior : MonoBehaviour
     void Update()
     {
         // I don't like this and I'm sure you don't either, we'll both survive
-        // if (age.state == AgeEnum.Adult)
-        //     if (timeSinceLastAttack < 0.2)
-        //         weapon.GetComponent<BoxCollider2D>().enabled = false;
+        if (age.state == AgeEnum.Adult)
+            if (timeSinceLastAttack > 0.4)
+                weapon.GetComponent<BoxCollider2D>().enabled = false;
         timeSinceLastAttack += Time.deltaTime;
+
+        if (currentHealth <= 0)
+        {
+            playerController.Death();
+            Destroy(this);
+        }
+
         ChangeState();
     }
 
@@ -149,11 +156,7 @@ public class AgeBehavior : MonoBehaviour
     }
 
     private void BabyAttack() {
-        // Dodge
-        int storeDefense = this.defense;
-        this.defense = 100;
-        // Call the dodge animation
-        this.defense = storeDefense;
+        StartCoroutine(playerController.Dash());
     }
 
     bool attacking;
@@ -195,7 +198,6 @@ public class AgeBehavior : MonoBehaviour
         else
             timeSinceLastAttack = 0.0f;
 
-        attacking = true;
         // iFrames during attack
         playerController.invincible = true;
 
@@ -206,7 +208,6 @@ public class AgeBehavior : MonoBehaviour
 
     public void FinishAdultAttack()
     {
-        Debug.Log(playerController);
         weapon.GetComponent<BoxCollider2D>().enabled = false;
         playerController.invincible = false;
     }

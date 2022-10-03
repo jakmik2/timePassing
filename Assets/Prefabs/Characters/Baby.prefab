@@ -142,7 +142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
-  speed: 14
+  speed: 10
   defense: 0
 --- !u!70 &3964406970881832930
 CapsuleCollider2D:
