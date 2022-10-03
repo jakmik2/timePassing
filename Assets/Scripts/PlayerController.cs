@@ -11,7 +11,6 @@ public class PlayerController : MonoBehaviour
     AgeBehavior ageBehavior;
     [SerializeField] float jumpVelocity;
     [SerializeField] float velocityAugment;
-    [SerializeField] TrailRenderer tr;
     private bool canDash = true;
     private bool isDashing;
     private float dashingPower = 24f;
@@ -141,9 +140,7 @@ public class PlayerController : MonoBehaviour
         float originalGravity = rigidbody2D.gravityScale;
         rigidbody2D.gravityScale = 0f;
         rigidbody2D.velocity = new Vector2(Mathf.Sign(rigidbody2D.velocity.x) * dashingPower, 0f);
-        tr.emitting = true;
         yield return new WaitForSeconds(dashingTime);
-        tr.emitting = false;
         rigidbody2D.gravityScale = originalGravity;
         isDashing = false;
         yield return new WaitForSeconds(dashingCooldown);
