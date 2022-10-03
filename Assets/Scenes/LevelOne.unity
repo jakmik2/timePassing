@@ -944,7 +944,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogue:
-    sentences: []
+    sentences:
+    - Ever just wake up one day and hate what you see in the mirror?
+    - I just wanted to go back to the good times.
+    - I figured dark magic might make me look a bit younger
+    - Who knew black magic was bad?
+    - Oh well, there you go.
+    - By the way, it's WASD to navigate this strange land.
+    - Don't forget to use LMB for your special move.
+    - Also, do try to avoid any time paradoxes... They're killer.
+    - BwahahAHAHAHAHAHAHA... Oh sorry go on ahead.
 --- !u!114 &843917076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1898,8 +1907,9 @@ GameObject:
   - component: {fileID: 1355896526}
   - component: {fileID: 1355896528}
   - component: {fileID: 1355896527}
+  - component: {fileID: 1355896529}
   m_Layer: 5
-  m_Name: Dialogue_Container
+  m_Name: Dialogue_Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1966,6 +1976,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1355896525}
   m_CullTransparentMesh: 1
+--- !u!95 &1355896529
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1355896525}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 895b46244cf4a6f4b89e333e889d94ce, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1371576065
 GameObject:
   m_ObjectHideFlags: 0
@@ -1995,8 +2025,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ee1beec46e8f714db03dff492cce99e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueText: {fileID: 0}
-  animator: {fileID: 0}
+  dialogueText: {fileID: 201301262}
+  animator: {fileID: 1355896529}
 --- !u!4 &1371576067
 Transform:
   m_ObjectHideFlags: 0
