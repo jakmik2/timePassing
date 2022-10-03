@@ -38,12 +38,10 @@ public class AgeBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         // I don't like this and I'm sure you don't either, we'll both survive
         if (age.state == AgeEnum.Adult)
             if (timeSinceLastAttack > 0.4)
                 weapon.GetComponent<BoxCollider2D>().enabled = false;
-
         timeSinceLastAttack += Time.deltaTime;
 
         if (currentHealth <= 0)
