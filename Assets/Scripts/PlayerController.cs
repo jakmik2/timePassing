@@ -10,12 +10,23 @@ public class PlayerController : MonoBehaviour
     Animator animator;
     AgeBehavior ageBehavior;
     [SerializeField] float jumpVelocity;
+    [SerializeField] float velocityAugment;
+    [SerializeField] TrailRenderer tr;
+    private bool canDash = true;
+    private bool isDashing;
+    private float dashingPower = 24f;
+    private float dashingTime = 0.3f;
+    private float dashingCooldown = 1f;
+    
+    [SerializeField] GameObject deathScreen;
     public float speed;
     public bool playerFacingRight;
     AgeStats currentAge;
     Vector2 startPos;
     public bool invincible = false;
     float timer = 0f;
+    float jumpWait = 0f;
+    bool disable = false;
 
     // Start is called before the first frame update
     void Start()
@@ -33,17 +44,38 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isDashing)
+            return;
+        if (disable)
+            return;
         speed = ageBehavior.speed;
 
-        InvincibleTimer();
+        if (rigidbody2D.velocity.y < 0)
+            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, rigidbody2D.velocity.y * velocityAugment);
 
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+        InvincibleTimer();
+        if (jumpWait > 0.1f)
+            GetInput();
+        else
+            jumpWait += Time.deltaTime;
+            
+        UpdateAnimation();
+    }
+
+    Vector2 position;
+
+    private void GetInput()
+    {
+        if (TouchingWall())
+        {
+            rigidbody2D.velocity = new Vector2(0f, 0f);
+        }
+        else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
             Move();
         if (Input.GetKey(KeyCode.W))
             Jump();
         if (Input.GetMouseButtonDown(0))
             Attack();
-        UpdateAnimation();
     }
 
     private void InvincibleTimer()
@@ -82,18 +114,45 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    float wall;
+
     private void Jump()
     {
         float dirY = Input.GetAxis("Vertical");
 
-        if (notFalling())
+
+        if (TouchingWall())
         {
-            rigidbody2D.velocity = new Vector2(0, Mathf.Min((jumpVelocity * dirY) + 2f, 10f));
+            jumpWait = 0f;
+            rigidbody2D.velocity = new Vector2(-wall * 15f, 15f);
         }
+        else if (NotFalling())
+        {
+            rigidbody2D.velocity = new Vector2(0, 15f);
+        }
+
+    }
+
+    public IEnumerator Dash()
+    {
+        canDash = false;
+        isDashing = true;
+        invincible = true;
+        float originalGravity = rigidbody2D.gravityScale;
+        rigidbody2D.gravityScale = 0f;
+        rigidbody2D.velocity = new Vector2(Mathf.Sign(rigidbody2D.velocity.x) * dashingPower, 0f);
+        tr.emitting = true;
+        yield return new WaitForSeconds(dashingTime);
+        tr.emitting = false;
+        rigidbody2D.gravityScale = originalGravity;
+        isDashing = false;
+        yield return new WaitForSeconds(dashingCooldown);
+        canDash = true;
+        invincible = false;
     }
 
     // Shoot a raycast down, if it hits a collider that is grater than a certain distance away, then the object is falling.
-    private bool notFalling()
+    private bool NotFalling()
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, -Vector2.up);
 
@@ -106,11 +165,34 @@ public class PlayerController : MonoBehaviour
             return false;
     }
 
+    private bool TouchingWall()
+    {
+        RaycastHit2D hitRight = Physics2D.Raycast(transform.position, Vector2.right);
+        RaycastHit2D hitLeft = Physics2D.Raycast(transform.position, Vector2.left);
+
+        if (hitRight.collider != null)
+            if (hitRight.collider.name == "Tilemap")
+            {
+                float distance = Mathf.Abs(hitRight.point.x - transform.position.x);
+                wall = 1;
+                return distance < 0.41f;
+            }
+        
+        if (hitLeft.collider != null)
+            if (hitLeft.collider.name == "Tilemap")
+            {
+                float distance = Mathf.Abs(hitLeft.point.x - transform.position.x);
+                wall = -1;
+                return distance < 0.41f;
+            }
+        return false;
+    }
+
     public void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.name == "Death")
         {
-            transform.position = startPos;
+            Death();
         }
         else if (col.gameObject.GetComponent<Damage>() != null && !invincible)
         {
@@ -121,11 +203,19 @@ public class PlayerController : MonoBehaviour
             // Otherwise inflict damage
             Damage damage = col.gameObject.GetComponent<Damage>();
             ageBehavior.TakeDamage(damage.points);
-            rigidbody2D.velocity = new Vector2(-1f * Mathf.Sign(rigidbody2D.velocity.x) + 2f, 4f);
+            rigidbody2D.velocity = new Vector2(-6f * Mathf.Sign(rigidbody2D.velocity.x), 8f);
             
             GetComponent<Animator>().SetTrigger("Damage");
             invincible = true;
         }
+    }
+
+    public void Death()
+    {
+        transform.position = startPos;
+        // Destroy(this.gameObject);
+        deathScreen.SetActive(true);
+        disable = true;
     }
 
     private void Attack()
