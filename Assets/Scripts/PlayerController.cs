@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     Animator animator;
     AgeBehavior ageBehavior;
     [SerializeField] float jumpVelocity;
+    [SerializeField] float velocityAugment;
     public float speed;
     public bool playerFacingRight;
     AgeStats currentAge;
@@ -34,6 +35,9 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         speed = ageBehavior.speed;
+
+        if (rigidbody2D.velocity.y < 0)
+            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, rigidbody2D.velocity.y * velocityAugment);
 
         InvincibleTimer();
 
@@ -88,7 +92,7 @@ public class PlayerController : MonoBehaviour
 
         if (notFalling())
         {
-            rigidbody2D.velocity = new Vector2(0, Mathf.Min((jumpVelocity * dirY) + 2f, 10f));
+            rigidbody2D.velocity = new Vector2(0,15f);
         }
     }
 
