@@ -8,7 +8,10 @@ public class DialogueController : MonoBehaviour
 {
     public TextMeshProUGUI dialogueText;
     [SerializeField] GameObject dialogueObject;
+    [SerializeField] GameObject player;
+    [SerializeField] GameObject scoreObject;
 
+    ScoreBoard score;
     public Animator animator;
 
     private Queue<string> sentences;
@@ -18,6 +21,7 @@ public class DialogueController : MonoBehaviour
     {
         sentences = new Queue<string>();
         animator.SetBool("isOpen", true);
+        score = scoreObject.GetComponent<ScoreBoard>();
     }
 
     public void StartDialogue(Dialogue dialogue)
@@ -47,6 +51,8 @@ public class DialogueController : MonoBehaviour
     void EndDialogue()
     {
         animator.SetBool("isOpen", false);
+        player.SetActive(true);
+        score.begin = true;
         dialogueObject.SetActive(false);
     }
 }

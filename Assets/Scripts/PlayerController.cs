@@ -11,11 +11,11 @@ public class PlayerController : MonoBehaviour
     AgeBehavior ageBehavior;
     [SerializeField] float jumpVelocity;
     [SerializeField] float velocityAugment;
-    private bool canDash = true;
+    public bool canDash = true;
     private bool isDashing;
     private float dashingPower = 24f;
     private float dashingTime = 0.3f;
-    private float dashingCooldown = 4f;
+    private float dashingCooldown = 2f;
     
     [SerializeField] GameObject deathScreen;
     public float speed;

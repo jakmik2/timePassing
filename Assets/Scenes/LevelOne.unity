@@ -555,6 +555,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9497304b69e7b44ba2be17070989660, type: 3}
+--- !u!1 &1663667276 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5657568708209918292, guid: f96249039bef361408880db395794bdf, type: 3}
+  m_PrefabInstance: {fileID: 649148619712315803}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2051417970
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -772,6 +777,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 649148618375305045, guid: f96249039bef361408880db395794bdf, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 649148618391148185, guid: f96249039bef361408880db395794bdf, type: 3}
+      propertyPath: score
+      value: 
+      objectReference: {fileID: 1663667276}
+    - target: {fileID: 649148618391148185, guid: f96249039bef361408880db395794bdf, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1010392018}
+    - target: {fileID: 649148618391148185, guid: f96249039bef361408880db395794bdf, type: 3}
+      propertyPath: scoreObject
+      value: 
+      objectReference: {fileID: 1663667276}
     - target: {fileID: 649148618835951528, guid: f96249039bef361408880db395794bdf, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -780,7 +801,16 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 4697385413933600800, guid: f96249039bef361408880db395794bdf, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5657568708209918292, guid: f96249039bef361408880db395794bdf, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 696255362409441114, guid: f96249039bef361408880db395794bdf, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: f96249039bef361408880db395794bdf, type: 3}
 --- !u!1001 &1414844780418092220
 PrefabInstance:
@@ -922,6 +952,10 @@ PrefabInstance:
     - target: {fileID: 3866173741154504329, guid: cddf31c04b7fcd04d8fe46b7b170bb64, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 3866173741154504329, guid: cddf31c04b7fcd04d8fe46b7b170bb64, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3866173741154504332, guid: cddf31c04b7fcd04d8fe46b7b170bb64, type: 3}
       propertyPath: m_RootOrder

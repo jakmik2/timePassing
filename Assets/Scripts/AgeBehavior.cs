@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AgeBehavior : MonoBehaviour
 {
-    public float currentHealth = 1f;
-    public float maxHealth = 1f;
+    public float currentHealth;
+    public float maxHealth;
     public int defense;
     public float speed;
     public Age age;
@@ -27,11 +28,18 @@ public class AgeBehavior : MonoBehaviour
         age = new Age();
         prefab = GetCurrentPrefab();
         playerController = FindObjectOfType(typeof(PlayerController)) as PlayerController;
+        
+        if (SceneManager.GetActiveScene().name == "LevelOne")
+        {
+            PlayerPrefs.SetFloat("currentHealth", 1);
+        }
+
     }
 
     void Start()
     {
-        healthBar.SetMaxHealth(maxHealth, true);
+        currentHealth = PlayerPrefs.GetFloat("currentHealth") * maxHealth;
+        healthBar.SetMaxHealth(maxHealth, currentHealth);
         UpdatePlayerStatistics();
     }
 
@@ -88,6 +96,7 @@ public class AgeBehavior : MonoBehaviour
     {
         currentHealth -= amt;
         healthBar.SetHealth(currentHealth);
+        PlayerPrefs.SetFloat("currentHealth", currentHealth / maxHealth);
     }
 
     private void UpdatePlayerStatistics()
@@ -111,8 +120,7 @@ public class AgeBehavior : MonoBehaviour
         
         this.maxHealth = prefab.GetComponent<AgeStats>().maxHealth;
         this.currentHealth = maxHealth * ratio;
-        healthBar.SetMaxHealth(this.maxHealth);
-        healthBar.SetHealth(this.currentHealth);
+        healthBar.SetMaxHealth(this.maxHealth, this.currentHealth);
         
         // Update defense
         this.defense = prefab.GetComponent<AgeStats>().defense;
@@ -156,7 +164,8 @@ public class AgeBehavior : MonoBehaviour
     }
 
     private void BabyAttack() {
-        StartCoroutine(playerController.Dash());
+        if (playerController.canDash)
+            StartCoroutine(playerController.Dash());
     }
 
     bool attacking;
