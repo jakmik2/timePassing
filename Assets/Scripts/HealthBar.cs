@@ -28,12 +28,11 @@ public class HealthBar : MonoBehaviour
         slider.value = health;
     }
 
-    public void SetMaxHealth(float health, bool setMax=false)
+    public void SetMaxHealth(float health, float currentHealth)
     {
         slider.maxValue = health;
         rt.sizeDelta = new Vector2(conversionRate * health, rt.sizeDelta.y);
         rt.localPosition = new Vector2((conversionRate * (health - 20)) / 2 + origin.x, rt.localPosition.y);
-        if (setMax)
-            slider.value = health;
+        slider.value = currentHealth;
     }
 }

@@ -7,14 +7,15 @@ public class Damageable : MonoBehaviour
     [SerializeField] float maxHealth;
     [SerializeField] int points;
     [SerializeField] string controllerName;
-    Score score;
+    ScoreBoard score;
     float currentHealth;
     Animator animator;
+    bool scored = false;
 
 
     void Start()
     {
-        score = FindObjectOfType(typeof(Score)) as Score;
+        score = FindObjectOfType(typeof(ScoreBoard)) as ScoreBoard;
         currentHealth = maxHealth;
         animator = GetComponent<Animator>();
     }
@@ -26,15 +27,12 @@ public class Damageable : MonoBehaviour
 
     private void CheckHealth()
     {
-        if (currentHealth <= 0)
+        if (currentHealth <= 0 && !scored)
         {
+            scored = true;
             animator.SetTrigger("Dead");
+            score.AddToScore(points);
         }
-    }
-
-    public void OnDestroy()
-    {
-        score.AddToScore(points);
     }
 
     public void TakeDamage(float amt)

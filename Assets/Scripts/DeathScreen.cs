@@ -5,6 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class DeathScreen : MonoBehaviour
 {
+    private void Awake()
+    {
+        ScoreBoard score = FindObjectOfType(typeof(ScoreBoard)) as ScoreBoard;
+        score.stopTracking = true;
+    }
+
     public void PlayAgain()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
