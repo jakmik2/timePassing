@@ -229,7 +229,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 1f139b68017265f4ab288586cf4c0bf8, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.119
+  m_Volume: 0.79
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -795,11 +795,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1414844780799030332, guid: f9242da1675c213498b1e4624983de7c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 41.79
+      value: -2.94
       objectReference: {fileID: 0}
     - target: {fileID: 1414844780799030332, guid: f9242da1675c213498b1e4624983de7c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12.29
+      value: -0.37
       objectReference: {fileID: 0}
     - target: {fileID: 1414844780799030332, guid: f9242da1675c213498b1e4624983de7c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -929,11 +929,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3866173741154504332, guid: cddf31c04b7fcd04d8fe46b7b170bb64, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 41.79
+      value: -2.94
       objectReference: {fileID: 0}
     - target: {fileID: 3866173741154504332, guid: cddf31c04b7fcd04d8fe46b7b170bb64, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10.79
+      value: -1.87
       objectReference: {fileID: 0}
     - target: {fileID: 3866173741154504332, guid: cddf31c04b7fcd04d8fe46b7b170bb64, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1121,6 +1121,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DeathScreen
       objectReference: {fileID: 0}
+    - target: {fileID: 5351528071276119232, guid: 220eb66beab18ee47abe12919584d4dd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 220eb66beab18ee47abe12919584d4dd, type: 3}
 --- !u!1001 &7604927826295466528
@@ -1144,11 +1148,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7604927825688543469, guid: 0d4beb4639114ee46b1aa9caa9d941c5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 41.79
+      value: -2.94
       objectReference: {fileID: 0}
     - target: {fileID: 7604927825688543469, guid: 0d4beb4639114ee46b1aa9caa9d941c5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12.29
+      value: -0.37
       objectReference: {fileID: 0}
     - target: {fileID: 7604927825688543469, guid: 0d4beb4639114ee46b1aa9caa9d941c5, type: 3}
       propertyPath: m_LocalPosition.z

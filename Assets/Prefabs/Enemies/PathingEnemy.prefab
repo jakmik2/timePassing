@@ -382,3 +382,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 10
   points: 500
+  controllerName: Enemy

@@ -7,6 +7,6 @@ public class NextLevel : MonoBehaviour
 {
     public void OnCollisionEnter2D()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1) % 3);
     }
 }

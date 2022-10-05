@@ -6,6 +6,7 @@ public class Damageable : MonoBehaviour
 {
     [SerializeField] float maxHealth;
     [SerializeField] int points;
+    [SerializeField] string controllerName;
     Score score;
     float currentHealth;
     Animator animator;
@@ -44,6 +45,10 @@ public class Damageable : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D col)
     {
+        if (col.GetComponent<Damageable>() != null)
+            if (col.GetComponent<Damageable>().controllerName == this.controllerName)
+                return;
+                
         if (col.GetComponent<Damage>() != null)
         {
             TakeDamage(col.GetComponent<Damage>().points);
